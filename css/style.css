@@ -1,23 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+body {
+  background-color: #0b0f19;
+}
+
+#header-title {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+
+}
+
+h1 {
+  font-family: 'Press Start 2P', cursive;
+  color: #f59e0b;
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px #000000;
+}
+
+#game-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 #maze-container {
   display: grid;
-  grid-template-columns: repeat(7, 40px);
-  grid-template-rows: repeat(5, 40px);
+  grid-template-columns: repeat(13, 40px);
+  grid-template-rows: repeat(7, 40px);
   gap: 2px;
-  background-color: #0f172a; /* Desert night sky tone */
+  background-color: #0f172a;
   padding: 10px;
-  border: 4px solid #b45309; /* Traditional earthy border tone */
+  border: 4px solid #b45309;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
 }
 
 .tile {
   width: 40px;
   height: 40px;
 }
+
 .wall {
-  background-color: #d97706; 
+  background-color: #d97706;
   border-radius: 4px;
   box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.4);
 }
 
 .path {
   background-color: #1e293b;
+  border-radius: 2px;
+}
+
+.player-spawn {
+  background-color: #f59e0b;
+  border-radius: 50%;
+}
+
+.enemy-path {
+  background-color: #ef4444;
+  /* Distinct color for enemy path */
+  border-radius: 50%;
 }
