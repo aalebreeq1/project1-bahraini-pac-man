@@ -31,8 +31,8 @@ h1 {
 
 #maze-container {
   display: grid;
-  grid-template-columns: repeat(13, 40px);
-  grid-template-rows: repeat(7, 40px);
+  grid-template-columns: repeat(18, 40px);
+  grid-template-rows: repeat(11, 40px);
   gap: 2px;
   background-color: #0f172a;
   padding: 10px;
@@ -64,6 +64,34 @@ h1 {
 
 .enemy-path {
   background-color: #ef4444;
-  /* Distinct color for enemy path */
   border-radius: 50%;
+}
+#btn-container{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  justify-content: space-evenly;
+  margin: 30px;
+}
+
+#reset-btn {
+  font-family: 'Press Start 2P', cursive;
+  background-color: #d97706;
+  color: #ffffff;
+  border: none;
+  padding: 12px 24px;
+  font-size: 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+#reset-btn:hover {
+  background-color: #b45309;
+}
+
+#reset-btn:active {
+  transform: scale(0.95);
 }
