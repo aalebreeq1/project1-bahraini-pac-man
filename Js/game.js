@@ -8,7 +8,7 @@ const theMaze = [
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
     [1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1],
-    [1, 2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 3, 1],
+    [1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
     [1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1],
     [1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
@@ -40,9 +40,17 @@ function drawMaze() {
             }
             else if (cellType === 2) {
                 tile.classList.add("path", "player-spawn");
+                const player=document.createElement('img');
+                player.src = "assets/pac-man.png";
+                player.classList.add("player");
+                tile.appendChild(player);
             }
             else if (cellType === 3) {
                 tile.classList.add("path", "enemy-path");
+                const ghost=document.createElement('img');
+                ghost.src = "assets/ghost.png";
+                ghost.classList.add("ghost");
+                tile.appendChild(ghost);
             }
 
             else {
