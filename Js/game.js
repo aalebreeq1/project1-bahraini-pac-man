@@ -1,5 +1,5 @@
 // The Maze 2D array: 0 = path, 1 = wall, 2 = player spawn, 3 = enemy path, 4 = date, 5 = fish
-const initialMaze = [
+const theMaze = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 2, 4, 4, 4, 4, 5, 1, 5, 4, 4, 4, 4, 4, 4, 5, 4, 1],
     [1, 4, 1, 1, 1, 4, 1, 1, 1, 4, 1, 1, 1, 4, 1, 1, 4, 1],
@@ -15,12 +15,11 @@ const initialMaze = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ];
 
-const theMaze = initialMaze.map((row) => [...row]);
 
 // Cache the maze container element from the HTML
 const containerElement = document.querySelector("#maze-container");
 const resetButton = document.querySelector("#reset-btn");
-const scoreElement   = document.querySelector("#score-board");
+const scoreElement = document.querySelector("#score-board");
 
 // Player default position based on the maze array (row, column)
 const playerPos = { r: 1, c: 1 };
@@ -194,31 +193,72 @@ function handleKeyPress(event) {
     updatePlayerPosition(newR, newC);
 }
 
-// function moveEnemy() {
-//     const directions = [
-//         { r: -1, c: 0 },
-//         { r: 1, c: 0 },
-//         { r: 0, c: -1 },
-//         { r: 0, c: 1 }
-//     ];
+function checkGameOver() {
+    if (playerPos.r === enemyPos.r && playerPos.c === enemyPos.c) {
+        isGameOver = true;
+        clearInterval(enemyInterval);
+        alert("Game Over! Your score: " + score);
+        resetGame();
+    }
 
-// }
+}
+
+function winGame() {
+    if (score === 1410) {
+        alert("You Win! Your score: " + score);
+        resetGame();
+    }
+}
+
+function updateEnemyPosition() {
+    const directions = [
+        { r: -1, c: 0 },
+        { r: 1, c: 0 },
+        { r: 0, c: -1 },
+        { r: 0, c: 1 }
+    ];
+
+    validMoves = directions.filter(d => isVaildMove(enemyPos.r + d.r, enemyPos.c + d.c));
+    console.log("Valid moves for enemy:", validMoves);
+    if (validMoves.length === 0) {
+        return;
+    }
+    else {
+        const randomDirection = validMoves[Math.floor(Math.random() * validMoves.length)];
+        const oldTile = tileElements[enemyPos.r][enemyPos.c];
+        removeEnemyFromTile(oldTile);
+        enemyPos.r += randomDirection.r;
+        enemyPos.c += randomDirection.c;
+        const newTile = tileElements[enemyPos.r][enemyPos.c];
+        const ghost = document.createElement("img");
+        ghost.src = "assets/ghost.png";
+        ghost.classList.add("ghost");
+        newTile.prepend(ghost);
+        checkGameOver();
+    }
+
+}
 
 function resetGame() {
-    for (let r = 0; r < initialMaze.length; r++) {
-        for (let c = 0; c < initialMaze[r].length; c++) {
-            theMaze[r][c] = initialMaze[r][c];
+    for (let r = 0; r < theMa.length; r++) {
+        for (let c = 0; c < theMaze[r].length; c++) {
+            theMaze[r][c] = theMaze[r][c];
         }
     }
 
     score = 0;
+    scoreElement.textContent = Number(0);
+
+
     isGameOver = false;
     playerPos.r = 1;
     playerPos.c = 1;
     drawMaze();
+    enemyinterval = setInterval(updateEnemyPosition, 1000);
 }
 
 drawMaze();
+enemyInterval = setInterval(updateEnemyPosition, 1000);
 resetButton.addEventListener("click", resetGame);
 document.addEventListener("keydown", handleKeyPress);
 

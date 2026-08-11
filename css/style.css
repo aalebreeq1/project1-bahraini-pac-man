@@ -89,6 +89,7 @@ h1 {
   object-fit: contain;
   display: block;
   margin: auto;
+  z-index: 1000;
 }
 
 .date {
