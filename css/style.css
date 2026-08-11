@@ -13,6 +13,14 @@ body {
   gap: 10px;
 
 }
+#header-title h3 {
+  font-family: 'Press Start 2P', cursive;
+  color: #f59e0b;
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px #000000;
+}
 
 h1 {
   font-family: 'Press Start 2P', cursive;
