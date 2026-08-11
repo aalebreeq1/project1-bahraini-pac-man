@@ -1,17 +1,17 @@
-// The Maze 2D array: 0 = path, 1 = wall, 2 = player spawn, 3 = enemy path
+// The Maze 2D array: 0 = path, 1 = wall, 2 = player spawn, 3 = enemy path, 4= date , 5=fish
 const theMaze = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1],
-    [1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1],
-    [1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 1, 1, 1, 0, 1, 1, 1, 1, 3, 1, 1, 1, 1, 0, 1, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1],
-    [1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 2, 4, 4, 4, 4, 5, 1, 5, 4, 4, 4, 4, 4, 4, 5, 4, 1],
+    [1, 4, 1, 1, 1, 4, 1, 1, 1, 4, 1, 1, 1, 4, 1, 1, 4, 1],
+    [1, 4, 1, 4, 4, 4, 4, 4, 1, 4, 4, 4, 1, 4, 4, 4, 4, 1],
+    [1, 4, 1, 4, 1, 1, 1, 4, 1, 1, 1, 4, 1, 1, 1, 4, 1, 1],
+    [1, 4, 4, 4, 5, 4, 4, 4, 5, 5, 5, 4, 4, 4, 4, 4, 4, 1],
+    [1, 1, 1, 1, 4, 1, 1, 1, 1, 3, 1, 1, 1, 1, 4, 1, 4, 1],
+    [1, 4, 5, 4, 4, 4, 4, 4, 5, 5, 5, 4, 4, 4, 4, 1, 4, 1],
+    [1, 4, 4, 4, 4, 5, 4, 1, 4, 4, 4, 4, 4, 4, 5, 5, 4, 1],
+    [1, 5, 1, 1, 1, 4, 1, 1, 1, 4, 1, 1, 1, 4, 1, 1, 4, 1],
+    [1, 4, 1, 4, 4, 4, 4, 5, 1, 4, 4, 4, 1, 4, 5, 4, 4, 1],
+    [1, 4, 4, 5, 4, 4, 5, 4, 4, 4, 5, 4, 4, 4, 4, 4, 5, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ];
 
@@ -24,6 +24,12 @@ const playerPos = { r: 1, c: 1 };
 
 // empty array to store refrence of all rendered tiles 
 const tileElements = [];
+
+let socre=0;
+const item1_score = 10;
+const item2_score = 20;
+let isGameOver = false;
+
 
 // Function to dynamically build and render the maze based on the 2D array
 function drawMaze() {
@@ -61,6 +67,20 @@ function drawMaze() {
                 ghost.src = "assets/ghost.png";
                 ghost.classList.add("ghost");
                 tile.appendChild(ghost);
+            }
+            else if(cellType === 4){
+                tile.classList.add("path", "date");
+                const date = document.createElement('img');
+                date.src = "assets/date-item1.png";
+                date.classList.add("date");
+                tile.appendChild(date);
+            }
+            else if(cellType === 5){
+                tile.classList.add("path", "fish");
+                const fish = document.createElement('img');
+                fish.src = "assets/fish.png";
+                fish.classList.add("fish");
+                tile.appendChild(fish);
             }
 
             else {
@@ -156,6 +176,8 @@ function resetGame() {
     newTile.appendChild(player);
     removePlayerFromTile(oldTile);
 }
+
+
 drawMaze();
 resetButton.addEventListener("click", resetGame);
 document.addEventListener("keydown", handleKeyPress);

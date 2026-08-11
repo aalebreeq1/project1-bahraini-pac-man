@@ -83,6 +83,22 @@ h1 {
   margin: auto;
 }
 
+.date {
+  width: 65px;
+  height: 65px;
+  object-fit: contain;
+  display: block;
+  margin: auto;
+}
+
+.fish {
+  width: 65px;
+  height: 65px;
+  object-fit: contain;
+  display: block;
+  margin: auto;
+}
+
 #btn-container {
   display: flex;
   flex-direction: row;
