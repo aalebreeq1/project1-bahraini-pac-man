@@ -252,7 +252,6 @@ function resetGame() {
     removePlayerFromTile(tileElements[playerPos.r][playerPos.c]);
     drawMaze();
 }
-
 window.addEventListener('DOMContentLoaded', () => {
     const audio = document.getElementById('bg-audio');
     const muteBtn = document.getElementById('mute-btn');
@@ -277,9 +276,12 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    drawMaze();
-    enemyInterval = setInterval(updateEnemyPosition, 1000);
-    resetButton.addEventListener("click", resetGame);
-    document.addEventListener("keydown", handleKeyPress);
+
 });
+
+
+drawMaze();
+enemyInterval = setInterval(updateEnemyPosition, 1000);
+resetButton.addEventListener("click", resetGame);
+document.addEventListener("keydown", handleKeyPress);
 
