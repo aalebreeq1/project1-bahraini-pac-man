@@ -15,11 +15,12 @@ a funa and innovative bahrain inspired version of the classic Pac-Man game built
  6. As a User, I want the game to end when an enemy catches me.
 
 ## Screenshots
- 
+ ![alt text](image.png)
 
 
 
 
 ## Future Enhancements
+
 
 ## Credits

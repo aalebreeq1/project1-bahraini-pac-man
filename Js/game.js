@@ -15,6 +15,8 @@ const theMaze = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ];
 
+const initialMaze = theMaze.map(row => [...row]);
+
 
 // Cache the maze container element from the HTML
 const containerElement = document.querySelector("#maze-container");
@@ -240,17 +242,25 @@ function updateEnemyPosition() {
 }
 
 function resetGame() {
+    for (let r = 0; r < theMaze.length; r++) {
+        for (let c = 0; c < theMaze[r].length; c++) {
+            theMaze[r][c] = initialMaze[r][c];
+        }
+    }
+
     score = 0;
     scoreElement.textContent = Number(0);
+    isGameOver = false;
 
     enemyPos.r = 6;
     enemyPos.c = 9;
-    removeEnemyFromTile(tileElements[enemyPos.r][enemyPos.c]);
-    isGameOver = false;
     playerPos.r = 1;
     playerPos.c = 1;
-    removePlayerFromTile(tileElements[playerPos.r][playerPos.c]);
+
     drawMaze();
+
+    clearInterval(enemyInterval);
+    enemyInterval = setInterval(updateEnemyPosition, 1000);
 }
 window.addEventListener('DOMContentLoaded', () => {
     const audio = document.getElementById('bg-audio');
