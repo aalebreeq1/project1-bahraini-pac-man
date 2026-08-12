@@ -29,6 +29,7 @@ const timerElement = document.querySelector("#time-board");
 const playerPos = { r: 1, c: 1 };
 const enemyPos = { r: 6, c: 9 };
 let enemyInterval = null;
+let time=0
 
 // Empty array to store references of all rendered tiles
 const tileElements = [];
@@ -203,7 +204,7 @@ function checkGameOver() {
     if (playerPos.r === enemyPos.r && playerPos.c === enemyPos.c) {
         isGameOver = true;
         clearInterval(enemyInterval);
-        alert("Game Over! Your score: " + score);
+        alert("Game Over! Your score: " + score + ". Time: " + time + " seconds.");
         resetGame();
     }
 
@@ -213,7 +214,7 @@ function winGame() {
     const hasItemsLeft = theMaze.some(row => row.some(cell => cell === 4 || cell === 5));
     if (!hasItemsLeft) {
         clearInterval(enemyInterval);
-        alert("You Win! Your score: " + score);
+        alert("You Win! Your score: " + score + ". Time: " + time + " seconds.");
         resetGame();
     }
 }
@@ -294,9 +295,15 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
 });
-
+function startTimer() {
+    setInterval(() => {
+        time++;
+        timerElement.textContent = time;
+    }, 1000);
+}
 function startGame() {
     drawMaze();
+    startTimer();   
     enemyInterval = setInterval(updateEnemyPosition, 1000);
     resetButton.addEventListener("click", resetGame);
     document.addEventListener("keydown", handleKeyPress);
