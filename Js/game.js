@@ -253,8 +253,33 @@ function resetGame() {
     drawMaze();
 }
 
-drawMaze();
-enemyInterval = setInterval(updateEnemyPosition, 1000);
-resetButton.addEventListener("click", resetGame);
-document.addEventListener("keydown", handleKeyPress);
+window.addEventListener('DOMContentLoaded', () => {
+    const audio = document.getElementById('bg-audio');
+    const muteBtn = document.getElementById('mute-btn');
+    if (audio) {
+        audio.volume = 0.3;
+        audio.loop = true;
+        audio.play().catch(() => {
+        });
+    }
+
+    if (audio && muteBtn) {
+        muteBtn.addEventListener('click', () => {
+            if (audio.paused) {
+                audio.play().catch(() => {
+                });
+                muteBtn.style.backgroundImage = "url('assets/sound-on.png')";
+            }
+            else {
+                audio.pause();
+                muteBtn.style.backgroundImage = "url('assets/sound-off.png')";
+            }
+        });
+    }
+
+    drawMaze();
+    enemyInterval = setInterval(updateEnemyPosition, 1000);
+    resetButton.addEventListener("click", resetGame);
+    document.addEventListener("keydown", handleKeyPress);
+});
 
