@@ -22,6 +22,8 @@ const initialMaze = theMaze.map(row => [...row]);
 const containerElement = document.querySelector("#maze-container");
 const resetButton = document.querySelector("#reset-btn");
 const scoreElement = document.querySelector("#score-board");
+const timerElement = document.querySelector("#time-board");
+
 
 // Player default position based on the maze array (row, column)
 const playerPos = { r: 1, c: 1 };
@@ -159,6 +161,8 @@ function updatePlayerPosition(newR, newC) {
     player.src = "assets/pac-man.png";
     player.classList.add("player");
     targetTile.appendChild(player);
+
+    winGame();
 }
 
 function removeEnemyFromTile(tile) {
@@ -206,7 +210,9 @@ function checkGameOver() {
 }
 
 function winGame() {
-    if (score === 1410) {
+    const hasItemsLeft = theMaze.some(row => row.some(cell => cell === 4 || cell === 5));
+    if (!hasItemsLeft) {
+        clearInterval(enemyInterval);
         alert("You Win! Your score: " + score);
         resetGame();
     }
@@ -289,9 +295,13 @@ window.addEventListener('DOMContentLoaded', () => {
 
 });
 
+function startGame() {
+    drawMaze();
+    enemyInterval = setInterval(updateEnemyPosition, 1000);
+    resetButton.addEventListener("click", resetGame);
+    document.addEventListener("keydown", handleKeyPress);
+}
 
-drawMaze();
-enemyInterval = setInterval(updateEnemyPosition, 1000);
-resetButton.addEventListener("click", resetGame);
-document.addEventListener("keydown", handleKeyPress);
+
+startGame();
 

@@ -10,7 +10,7 @@ body {
   align-items: start;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 5px;
 
 }
 
@@ -19,7 +19,7 @@ body {
   color: #f59e0b;
   text-align: center;
   font-size: 24px;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
   text-shadow: 2px 2px #000000;
 }
 
@@ -28,7 +28,7 @@ h1 {
   color: #f59e0b;
   text-align: center;
   font-size: 24px;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
   text-shadow: 2px 2px #000000;
 }
 
@@ -52,12 +52,6 @@ h1 {
   cursor: pointer;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
-
-
-
-
-
-
 
 #game-container {
   display: flex;
