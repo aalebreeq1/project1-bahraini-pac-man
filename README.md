@@ -15,11 +15,13 @@ a funa and innovative bahrain inspired version of the classic Pac-Man game built
  6. As a User, I want the game to end when an enemy catches me.
 
 ## Screenshots
-
-
-
-
+![alt text](image-1.png)
 ## Future Enhancements
-
+* add function that allow user to add custome player pic 
+* Increase the size of maze
+* Adding time based win condition
+* increase the number of ghosts
 
 ## Credits
+* W3School: https://www.w3schools.com/js/js_timers.asp
+* Chatgpt 5: https://chatgpt.com/share/6a7cb28a-69b0-83eb-9103-fbcca5628338 For generatimg images
