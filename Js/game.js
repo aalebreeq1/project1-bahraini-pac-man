@@ -23,6 +23,10 @@ const containerElement = document.querySelector("#maze-container");
 const resetButton = document.querySelector("#reset-btn");
 const scoreElement = document.querySelector("#score-board");
 const timerElement = document.querySelector("#time-board");
+const overlayElement = document.querySelector("#overlay");
+const finalScoreElement = document.querySelector("#final-score");
+const finalTimeElement = document.querySelector("#final-time");
+const finalScoreElement = document.querySelector("#final-score");
 
 
 // Player default position based on the maze array (row, column)
@@ -208,8 +212,10 @@ function checkGameOver() {
     if (playerPos.r === enemyPos.r && playerPos.c === enemyPos.c) {
         isGameOver = true;
         clearInterval(enemyInterval);
-        alert("Game Over! Your score: " + score + ". Time: " + time + " seconds.");
-        resetGame();
+        orverlayElement.style.display = "flex";
+        messageElement.textContent = "Game Over!";
+        finalScoreElement.textContent = "Final Score: " + score
+        finalTimeElement.textContent = "Time: " + time + " seconds";
     }
 
 }
@@ -218,8 +224,12 @@ function winGame() {
     const hasItemsLeft = theMaze.some(row => row.some(cell => cell === 4 || cell === 5));
     if (!hasItemsLeft) {
         clearInterval(enemyInterval);
-        alert("You Win! Your score: " + score + ". Time: " + time + " seconds.");
-        resetGame();
+
+        overlayElement.style.display = "flex";
+        messageElement.textContent = "You Win!";
+        finalScoreElement.textContent = "Final Score: " + score
+        finalTimeElement.textContent = "Time: " + time + " seconds";
+
     }
 }
 
