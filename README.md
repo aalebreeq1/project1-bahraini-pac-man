@@ -15,7 +15,12 @@ a funa and innovative bahrain inspired version of the classic Pac-Man game built
  6. As a User, I want the game to end when an enemy catches me.
 
 ## Screenshots
+### main UI
 ![alt text](image-1.png)
+### Win Message
+![alt text](image-2.png)
+
+
 ## Future Enhancements
 * add function that allow user to add custome player pic 
 * Increase the size of maze
