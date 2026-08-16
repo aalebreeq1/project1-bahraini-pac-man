@@ -14,8 +14,8 @@ const theMaze = [
     [1, 4, 4, 5, 4, 4, 5, 4, 4, 4, 5, 4, 4, 4, 4, 4, 5, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ];
-
 const initialMaze = theMaze.map(row => [...row]);
+
 
 
 // Cache the maze container element from the HTML
@@ -29,7 +29,8 @@ const timerElement = document.querySelector("#time-board");
 const playerPos = { r: 1, c: 1 };
 const enemyPos = { r: 6, c: 9 };
 let enemyInterval = null;
-let time=0
+let timerInterval = null;
+let time = 0;
 
 // Empty array to store references of all rendered tiles
 const tileElements = [];
@@ -163,6 +164,9 @@ function updatePlayerPosition(newR, newC) {
     player.classList.add("player");
     targetTile.appendChild(player);
 
+    checkGameOver();
+    if (isGameOver) return;
+
     winGame();
 }
 
@@ -227,28 +231,29 @@ function updateEnemyPosition() {
         { r: 0, c: 1 }
     ];
 
-    validMoves = directions.filter(d => isVaildMove(enemyPos.r + d.r, enemyPos.c + d.c));
-    console.log("Valid moves for enemy:", validMoves);
+    const validMoves = directions.filter(d => isVaildMove(enemyPos.r + d.r, enemyPos.c + d.c));
     if (validMoves.length === 0) {
         return;
     }
-    else {
-        const randomDirection = validMoves[Math.floor(Math.random() * validMoves.length)];
-        const oldTile = tileElements[enemyPos.r][enemyPos.c];
-        removeEnemyFromTile(oldTile);
-        enemyPos.r += randomDirection.r;
-        enemyPos.c += randomDirection.c;
-        const newTile = tileElements[enemyPos.r][enemyPos.c];
-        const ghost = document.createElement("img");
-        ghost.src = "assets/ghost.png";
-        ghost.classList.add("ghost");
-        newTile.prepend(ghost);
-        checkGameOver();
-    }
+
+    const randomDirection = validMoves[Math.floor(Math.random() * validMoves.length)];
+    const oldTile = tileElements[enemyPos.r][enemyPos.c];
+    removeEnemyFromTile(oldTile);
+    enemyPos.r += randomDirection.r;
+    enemyPos.c += randomDirection.c;
+    const newTile = tileElements[enemyPos.r][enemyPos.c];
+    const ghost = document.createElement("img");
+    ghost.src = "assets/ghost.png";
+    ghost.classList.add("ghost");
+    newTile.prepend(ghost);
+    checkGameOver();
 
 }
 
 function resetGame() {
+    clearInterval(enemyInterval);
+    clearInterval(timerInterval);
+
     for (let r = 0; r < theMaze.length; r++) {
         for (let c = 0; c < theMaze[r].length; c++) {
             theMaze[r][c] = initialMaze[r][c];
@@ -258,6 +263,8 @@ function resetGame() {
     score = 0;
     scoreElement.textContent = Number(0);
     isGameOver = false;
+    time = 0;
+    timerElement.textContent = Number(0);
 
     enemyPos.r = 6;
     enemyPos.c = 9;
@@ -265,9 +272,8 @@ function resetGame() {
     playerPos.c = 1;
 
     drawMaze();
-
-    clearInterval(enemyInterval);
     enemyInterval = setInterval(updateEnemyPosition, 1000);
+    startTimer();
 }
 window.addEventListener('DOMContentLoaded', () => {
     const audio = document.getElementById('bg-audio');
@@ -296,14 +302,18 @@ window.addEventListener('DOMContentLoaded', () => {
 
 });
 function startTimer() {
-    setInterval(() => {
+    clearInterval(timerInterval);
+    time = 0;
+    timerElement.textContent = Number(time);
+
+    timerInterval = setInterval(() => {
         time++;
         timerElement.textContent = time;
     }, 1000);
 }
 function startGame() {
     drawMaze();
-    startTimer();   
+    startTimer();
     enemyInterval = setInterval(updateEnemyPosition, 1000);
     resetButton.addEventListener("click", resetGame);
     document.addEventListener("keydown", handleKeyPress);
