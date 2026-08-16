@@ -8,9 +8,10 @@ body {
   display: flex;
   flex-direction: column;
   align-items: start;
-  justify-content: center;
+  justify-content: space-between;
+  display: inline;
   align-items: center;
-  gap: 5px;
+
 
 }
 
@@ -62,7 +63,7 @@ h1 {
 #maze-container {
   display: grid;
   grid-template-columns: repeat(18, 60px);
-  grid-template-rows: repeat(11, 60px);
+  grid-template-rows: repeat(13, 60px);
   gap: 2px;
   background-color: #0f172a;
   padding: 12px;
@@ -130,14 +131,7 @@ h1 {
   margin: auto;
 }
 
-#btn-container {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  justify-content: space-evenly;
-  margin: 30px;
-}
+
 
 #reset-btn {
   font-family: 'Press Start 2P', cursive;
@@ -171,15 +165,24 @@ h1 {
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  /* gap: 30px; */
+  padding: 20px;
+
+
 }
 
 #overlay-content {
-  background-color: #1e293b;
+  width: 40%;
+  height: 20%;
   padding: 20px;
   border-radius: 8px;
   text-align: center;
+  background-color: #1e293b;
+  font-size: 24px;
+  border: 4px solid #f59e0b;
+  border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  
   color: #f59e0b;
   font-family: 'Press Start 2P', cursive;
 }
-
