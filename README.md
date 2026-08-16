@@ -18,9 +18,9 @@ a funa and innovative bahrain inspired version of the classic Pac-Man game built
 ### main UI
 ![alt text](image-1.png)
 ### Win Message UI
-![alt text](image-2.png)
+![alt text](image-4.png)
 ### lose Message UI
-
+![alt text](image-3.png)
 
 
 ## Future Enhancements
