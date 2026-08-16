@@ -215,8 +215,8 @@ function checkGameOver() {
         clearInterval(timerInterval) 
         overlayElement.style.display = "flex" 
         messageElement.textContent = "lose!" 
-        finalScoreElement.textContent = `Final Score: ${score} XP` 
-        finalTimeElement.textContent = "Time: " + time + " seconds" 
+        finalScoreElement.textContent = `${score} XP` 
+        finalTimeElement.textContent = time + " seconds" 
     }
 
 }
@@ -228,8 +228,8 @@ function winGame() {
 
         overlayElement.style.display = "flex" 
         messageElement.textContent = "You Win!" 
-        finalScoreElement.textContent = "Final Score: " + score
-        finalTimeElement.textContent = "Time: " + time + " seconds" 
+        finalScoreElement.textContent = score +"XP"
+        finalTimeElement.textContent = time + " seconds" 
 
     }
 }
