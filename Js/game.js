@@ -283,7 +283,7 @@ function resetGame() {
     playerPos.c = 1 
 
     drawMaze() 
-    enemyInterval = setInterval(updateEnemyPosition, 1000) 
+    enemyInterval = setInterval(updateEnemyPosition, 750) 
     startTimer() 
 }
 window.addEventListener('DOMContentLoaded', () => {
@@ -325,7 +325,7 @@ function startTimer() {
 function startGame() {
     drawMaze() 
     startTimer() 
-    enemyInterval = setInterval(updateEnemyPosition, 1000) 
+    enemyInterval = setInterval(updateEnemyPosition, 750) 
     resetButton.addEventListener("click", resetGame) 
     document.addEventListener("keydown", handleKeyPress) 
 }
