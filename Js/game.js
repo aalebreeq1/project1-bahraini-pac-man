@@ -1,4 +1,6 @@
-// The Maze 2D array: 0 = path, 1 = wall, 2 = player spawn, 3 = enemy path, 4 = date, 5 = fish
+/*-------------------------------- Constants --------------------------------*/
+
+// The Maze 2D array: 1 = wall, 2 = player spawn, 3 = enemy path, 4 = date, 5 = fish
 const theMaze = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 2, 4, 4, 4, 4, 5, 1, 5, 4, 4, 4, 4, 4, 4, 5, 4, 1],
@@ -13,223 +15,219 @@ const theMaze = [
     [1, 4, 1, 4, 4, 4, 4, 5, 1, 4, 4, 4, 1, 4, 5, 4, 4, 1],
     [1, 4, 4, 5, 4, 4, 5, 4, 4, 4, 5, 4, 4, 4, 4, 4, 5, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-] 
-const initialMaze = theMaze.map(row => [...row]) 
+]
+const initialMaze = theMaze.map(row => [...row])
 
 
+const playerPos = { r: 1, c: 1 }
+const enemyPos = { r: 6, c: 9 }
 
-// Cache the maze container element from the HTML
-const containerElement = document.querySelector("#maze-container") 
-const resetButton = document.querySelector("#reset-btn") 
-const scoreElement = document.querySelector("#score-board") 
-const timerElement = document.querySelector("#time-board") 
-const overlayElement = document.querySelector("#overlay") 
-const finalScoreElement = document.querySelector("#final-score") 
-const finalTimeElement = document.querySelector("#final-time") 
-const messageElement = document.querySelector("#message") 
+const item1_score = 10
+const item2_score = 20
+const tileElements = []
 
+/*---------------------------- Variables (state) ----------------------------*/
+let enemyInterval = null
+let timerInterval = null
+let time = 0
+let score = 0
+let isGameOver = false
 
-// Player default position based on the maze array (row, column)
-const playerPos = { r: 1, c: 1 } 
-const enemyPos = { r: 6, c: 9 } 
-let enemyInterval = null 
-let timerInterval = null 
-let time = 0 
-
-// Empty array to store references of all rendered tiles
-const tileElements = [] 
-
-let score = 0 
-const item1_score = 10 
-const item2_score = 20 
-let isGameOver = false 
-
-// Function to dynamically build and render the maze based on the 2D array
+/*------------------------ Cached Element References ------------------------*/
+const containerElement = document.querySelector("#maze-container")
+const resetButton = document.querySelector("#reset-btn")
+const scoreElement = document.querySelector("#score-board")
+const timerElement = document.querySelector("#time-board")
+const overlayElement = document.querySelector("#overlay")
+const finalScoreElement = document.querySelector("#final-score")
+const finalTimeElement = document.querySelector("#final-time")
+const messageElement = document.querySelector("#message")
+/*-------------------------------- Functions --------------------------------*/
 function drawMaze() {
     if (!containerElement) {
-        console.error("Error: #maze-container element not found in HTML.") 
-        return 
+        console.error("Error: #maze-container element not found in HTML.")
+        return
     }
 
-    containerElement.innerHTML = "" 
-    tileElements.length = 0 
+    containerElement.innerHTML = ""
+    tileElements.length = 0
 
-    for (let r = 0 ; r < theMaze.length ; r++) {
-        tileElements[r] = [] 
+    for (let r = 0; r < theMaze.length; r++) {
+        tileElements[r] = []
 
-        for (let c = 0 ; c < theMaze[r].length ; c++) {
-            const tile = document.createElement("div") 
-            tile.classList.add("tile") 
+        for (let c = 0; c < theMaze[r].length; c++) {
+            const tile = document.createElement("div")
+            tile.classList.add("tile")
 
-            const cellType = theMaze[r][c] 
+            const cellType = theMaze[r][c]
 
             if (cellType === 1) {
-                tile.classList.add("wall") 
+                tile.classList.add("wall")
             }
             else if (cellType === 2) {
-                tile.classList.add("path", "player-spawn") 
-                const player = document.createElement("img") 
-                player.src = "assets/pac-man.png" 
-                player.classList.add("player") 
-                tile.appendChild(player) 
+                tile.classList.add("path", "player-spawn")
+                const player = document.createElement("img")
+                player.src = "assets/pac-man.png"
+                player.classList.add("player")
+                tile.appendChild(player)
             }
             else if (cellType === 3) {
-                tile.classList.add("path", "enemy-path") 
-                const ghost = document.createElement("img") 
-                ghost.src = "assets/ghost.png" 
-                ghost.classList.add("ghost") 
-                tile.appendChild(ghost) 
+                tile.classList.add("path", "enemy-path")
+                const ghost = document.createElement("img")
+                ghost.src = "assets/ghost.png"
+                ghost.classList.add("ghost")
+                tile.appendChild(ghost)
             }
             else if (cellType === 4) {
-                tile.classList.add("path", "date") 
-                const date = document.createElement("img") 
-                date.src = "assets/date-item1.png" 
-                date.classList.add("date") 
-                tile.appendChild(date) 
+                tile.classList.add("path", "date")
+                const date = document.createElement("img")
+                date.src = "assets/date-item1.png"
+                date.classList.add("date")
+                tile.appendChild(date)
             }
             else if (cellType === 5) {
-                tile.classList.add("path", "fish") 
-                const fish = document.createElement("img") 
-                fish.src = "assets/fish.png" 
-                fish.classList.add("fish") 
-                tile.appendChild(fish) 
+                tile.classList.add("path", "fish")
+                const fish = document.createElement("img")
+                fish.src = "assets/fish.png"
+                fish.classList.add("fish")
+                tile.appendChild(fish)
             }
             else {
-                tile.classList.add("path") 
+                tile.classList.add("path")
             }
 
-            tileElements[r][c] = tile 
-            containerElement.appendChild(tile) 
+            tileElements[r][c] = tile
+            containerElement.appendChild(tile)
         }
     }
 }
 
 function removePlayerFromTile(tile) {
-    if (!tile) return 
+    if (!tile) return
 
-    const player = tile.querySelector(".player") 
+    const player = tile.querySelector(".player")
     if (player) {
-        tile.removeChild(player) 
+        tile.removeChild(player)
     }
 }
 
 
 
 function removeItemFromTile(tile) {
-    if (!tile) return 
+    if (!tile) return
 
-    const item = tile.querySelector(".date, .fish") 
+    const item = tile.querySelector(".date, .fish")
     if (item) {
-        tile.removeChild(item) 
+        tile.removeChild(item)
     }
 }
 
 function isVaildMove(newR, newC) {
     if (newR < 0 || newR >= theMaze.length || newC < 0 || newC >= theMaze[0].length) {
-        return false 
+        return false
     }
 
-    return theMaze[newR][newC] !== 1 
+    return theMaze[newR][newC] !== 1
 }
 
 function updatePlayerPosition(newR, newC) {
     if (!isVaildMove(newR, newC)) {
-        return 
+        return
     }
 
-    const oldRow = playerPos.r 
-    const oldCol = playerPos.c 
-    const oldTile = tileElements[oldRow][oldCol] 
+    const oldRow = playerPos.r
+    const oldCol = playerPos.c
+    const oldTile = tileElements[oldRow][oldCol]
 
-    removePlayerFromTile(oldTile) 
+    removePlayerFromTile(oldTile)
 
-    const targetTile = tileElements[newR][newC] 
-    const cellType = theMaze[newR][newC] 
+    const targetTile = tileElements[newR][newC]
+    const cellType = theMaze[newR][newC]
 
     if (cellType === 4) {
-        theMaze[newR][newC] = 0 
-        score += item1_score 
-        removeItemFromTile(targetTile) 
-        scoreElement.textContent = Number(score) 
+        theMaze[newR][newC] = 0
+        score += item1_score
+        removeItemFromTile(targetTile)
+        scoreElement.textContent = Number(score)
     }
     else if (cellType === 5) {
-        theMaze[newR][newC] = 0 
-        score += item2_score 
-        removeItemFromTile(targetTile) 
-        scoreElement.textContent = Number(score) 
+        theMaze[newR][newC] = 0
+        score += item2_score
+        removeItemFromTile(targetTile)
+        scoreElement.textContent = Number(score)
     }
 
-    playerPos.r = newR 
-    playerPos.c = newC 
+    playerPos.r = newR
+    playerPos.c = newC
 
-    removePlayerFromTile(targetTile) 
-    const player = document.createElement("img") 
-    player.src = "assets/pac-man.png" 
-    player.classList.add("player") 
-    targetTile.appendChild(player) 
+    removePlayerFromTile(targetTile)
+    const player = document.createElement("img")
+    player.src = "assets/pac-man.png"
+    player.classList.add("player")
+    targetTile.appendChild(player)
 
-    checkGameOver() 
-    if (isGameOver) return 
+    checkGameOver()
+    if (isGameOver) return
 
-    winGame() 
+    winGame()
 }
 
 function removeEnemyFromTile(tile) {
-    if (!tile) return 
+    if (!tile) return
 
-    const enemy = tile.querySelector(".ghost") 
+    const enemy = tile.querySelector(".ghost")
     if (enemy) {
-        tile.removeChild(enemy) 
+        tile.removeChild(enemy)
     }
 }
 
 function handleKeyPress(event) {
-    let newR = playerPos.r 
-    let newC = playerPos.c 
-    const key = event.key 
+    let newR = playerPos.r
+    let newC = playerPos.c
+    const key = event.key
 
     if (key === "ArrowUp" || key === "w" || key === "W") {
-        newR-- 
+        newR--
     }
     else if (key === "ArrowDown" || key === "s" || key === "S") {
-        newR++ 
+        newR++
     }
     else if (key === "ArrowLeft" || key === "a" || key === "A") {
-        newC-- 
+        newC--
     }
     else if (key === "ArrowRight" || key === "d" || key === "D") {
-        newC++ 
+        newC++
     }
     else {
-        return 
+        return
     }
 
-    event.preventDefault() 
-    updatePlayerPosition(newR, newC) 
+    event.preventDefault()
+    updatePlayerPosition(newR, newC)
 }
 
 function checkGameOver() {
     if (playerPos.r === enemyPos.r && playerPos.c === enemyPos.c) {
-        isGameOver = true 
-        clearInterval(enemyInterval) 
-        clearInterval(timerInterval) 
-        overlayElement.style.display = "flex" 
-        messageElement.textContent = "lose!" 
-        finalScoreElement.textContent = `${score} XP` 
-        finalTimeElement.textContent = time + " seconds" 
+        isGameOver = true
+        clearInterval(enemyInterval)
+        clearInterval(timerInterval)
+        overlayElement.style.display = "flex"
+        messageElement.textContent = "lose!"
+        finalScoreElement.textContent = `${score} XP`
+        finalTimeElement.textContent = time + " seconds"
     }
 
 }
 
 function winGame() {
-    const hasItemsLeft = theMaze.some(row => row.some(cell => cell === 4 || cell === 5)) 
+    const hasItemsLeft = theMaze.some(row => row.some(cell => cell === 4 || cell === 5))
     if (!hasItemsLeft) {
-        clearInterval(enemyInterval) 
+        clearInterval(enemyInterval)
 
-        overlayElement.style.display = "flex" 
-        messageElement.textContent = "You Win!" 
-        finalScoreElement.textContent = score +"XP"
-        finalTimeElement.textContent = time + " seconds" 
+        overlayElement.style.display = "flex"
+        messageElement.textContent = "You Win!"
+        finalScoreElement.textContent = score + "XP"
+        finalTimeElement.textContent = time + " seconds"
 
     }
 }
@@ -240,96 +238,98 @@ function updateEnemyPosition() {
         { r: 1, c: 0 },
         { r: 0, c: -1 },
         { r: 0, c: 1 }
-    ] 
+    ]
 
-    const validMoves = directions.filter(d => isVaildMove(enemyPos.r + d.r, enemyPos.c + d.c)) 
+    const validMoves = directions.filter(d => isVaildMove(enemyPos.r + d.r, enemyPos.c + d.c))
     if (validMoves.length === 0) {
-        return 
+        return
     }
 
-    const randomDirection = validMoves[Math.floor(Math.random() * validMoves.length)] 
-    const oldTile = tileElements[enemyPos.r][enemyPos.c] 
-    removeEnemyFromTile(oldTile) 
-    enemyPos.r += randomDirection.r 
-    enemyPos.c += randomDirection.c 
-    const newTile = tileElements[enemyPos.r][enemyPos.c] 
-    const ghost = document.createElement("img") 
-    ghost.src = "assets/ghost.png" 
-    ghost.classList.add("ghost") 
-    newTile.prepend(ghost) 
-    checkGameOver() 
+    const randomDirection = validMoves[Math.floor(Math.random() * validMoves.length)]
+    const oldTile = tileElements[enemyPos.r][enemyPos.c]
+    removeEnemyFromTile(oldTile)
+    enemyPos.r += randomDirection.r
+    enemyPos.c += randomDirection.c
+    const newTile = tileElements[enemyPos.r][enemyPos.c]
+    const ghost = document.createElement("img")
+    ghost.src = "assets/ghost.png"
+    ghost.classList.add("ghost")
+    newTile.prepend(ghost)
+    checkGameOver()
 
 }
 
 function resetGame() {
-    clearInterval(enemyInterval) 
-    clearInterval(timerInterval) 
+    clearInterval(enemyInterval)
+    clearInterval(timerInterval)
 
-    for (let r = 0 ; r < theMaze.length ; r++) {
-        for (let c = 0 ; c < theMaze[r].length  ;c++) {
-            theMaze[r][c] = initialMaze[r][c] 
+    for (let r = 0; r < theMaze.length; r++) {
+        for (let c = 0; c < theMaze[r].length; c++) {
+            theMaze[r][c] = initialMaze[r][c]
         }
     }
 
-    score = 0 
-    scoreElement.textContent = Number(0) 
-    isGameOver = false 
-    time = 0 
-    timerElement.textContent = Number(0) 
-    overlayElement.style.display = "none" 
-    enemyPos.r = 6 
-    enemyPos.c = 9 
-    playerPos.r = 1 
-    playerPos.c = 1 
+    score = 0
+    scoreElement.textContent = Number(0)
+    isGameOver = false
+    time = 0
+    timerElement.textContent = Number(0)
+    overlayElement.style.display = "none"
+    enemyPos.r = 6
+    enemyPos.c = 9
+    playerPos.r = 1
+    playerPos.c = 1
 
-    drawMaze() 
-    enemyInterval = setInterval(updateEnemyPosition, 750) 
-    startTimer() 
+    drawMaze()
+    enemyInterval = setInterval(updateEnemyPosition, 750)
+    startTimer()
 }
+function startTimer() {
+    clearInterval(timerInterval)
+    time = 0
+    timerElement.textContent = Number(time)
+
+    timerInterval = setInterval(() => {
+        time++
+        timerElement.textContent = time
+    }, 1000)
+}
+function startGame() {
+    drawMaze()
+    startTimer()
+    enemyInterval = setInterval(updateEnemyPosition, 750)
+    resetButton.addEventListener("click", resetGame)
+    document.addEventListener("keydown", handleKeyPress)
+}
+
+startGame()
+
+/*----------------------------- Event Listeners -----------------------------*/
 window.addEventListener('DOMContentLoaded', () => {
-    const audio = document.getElementById('bg-audio') 
-    const muteBtn = document.getElementById('mute-btn') 
+    const audio = document.getElementById('bg-audio')
+    const muteBtn = document.getElementById('mute-btn')
     if (audio) {
-        audio.volume = 0.3 
-        audio.loop = true 
+        audio.volume = 0.3
+        audio.loop = true
         audio.play().catch(() => {
-        }) 
+        })
     }
 
     if (audio && muteBtn) {
         muteBtn.addEventListener('click', () => {
             if (audio.paused) {
                 audio.play().catch(() => {
-                }) 
-                muteBtn.style.backgroundImage = "url('assets/sound-on.png')" 
+                })
+                muteBtn.style.backgroundImage = "url('assets/sound-on.png')"
             }
             else {
-                audio.pause() 
-                muteBtn.style.backgroundImage = "url('assets/sound-off.png')" 
+                audio.pause()
+                muteBtn.style.backgroundImage = "url('assets/sound-off.png')"
             }
-        }) 
+        })
     }
 
 
-}) 
-function startTimer() {
-    clearInterval(timerInterval) 
-    time = 0 
-    timerElement.textContent = Number(time) 
+})
 
-    timerInterval = setInterval(() => {
-        time++ 
-        timerElement.textContent = time 
-    }, 1000) 
-}
-function startGame() {
-    drawMaze() 
-    startTimer() 
-    enemyInterval = setInterval(updateEnemyPosition, 750) 
-    resetButton.addEventListener("click", resetGame) 
-    document.addEventListener("keydown", handleKeyPress) 
-}
-
-
-startGame() 
 
