@@ -44,11 +44,6 @@ const finalTimeElement = document.querySelector("#final-time")
 const messageElement = document.querySelector("#message")
 /*-------------------------------- Functions --------------------------------*/
 function drawMaze() {
-    if (!containerElement) {
-        console.error("Error: #maze-container element not found in HTML.")
-        return
-    }
-
     containerElement.innerHTML = ""
     tileElements.length = 0
 
