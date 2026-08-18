@@ -215,10 +215,8 @@ function checkGameOver() {
 }
 
 function winGame() {
-    const hasItemsLeft = theMaze.some(row => row.some(cell => cell === 4 || cell === 5))
-    if (!hasItemsLeft) {
+    if (score === 1410) {
         clearInterval(enemyInterval)
-
         overlayElement.style.display = "flex"
         messageElement.textContent = "You Win!"
         finalScoreElement.textContent = score + "XP"
